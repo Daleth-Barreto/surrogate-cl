@@ -32,7 +32,7 @@ from cl.sim import (SimulatorDataSourceMetadata, set_simulator_data_source)
 
 import bridge_g1
 from bridge_g1 import (N_CHANNELS, CH_HEIGHT, CH_VX_OVERRIDE, TELEMETRY_PATH,
-                       STIM_UA_PER_MS)
+                       STATE_TSV_PATH, STIM_UA_PER_MS)
 from demo_walk import BASE_VX, TPS, build_hub, HubThread, TAU_HIP_L, TAU_HIP_R
 
 DURATION_SEC = 12.0
@@ -41,12 +41,42 @@ OVERRUN_US = 25_000  # 1/TPS in microseconds
 TAU_DEADBAND = 0.05
 VX_DEADBAND = 0.1
 
-MODES = ["neural", "zero", "random", "mask0.5"]
+MODES = ["neural", "zero", "random", "mask0.5", "poisson"]
 MASK_FRAC = 0.5
+POISSON_LAM = 0.14   # per-channel per-tick expected count (dead substrate)
 
 
 def _stim_current(value):
     return float(max(-0.75, min(0.75, value))) * STIM_UA_PER_MS
+
+
+def _align_state(log_t):
+    """Hold-last alignment of the bridge's per-ctrl-step state TSV to ticks."""
+    ts, h, vx, roll, pitch, cmd = [], [], [], [], [], []
+    try:
+        with open(STATE_TSV_PATH, "r") as fp:
+            for line in fp:
+                parts = line.split()
+                if len(parts) != 6:
+                    continue
+                t, hh, vv, rr, pp, cc = map(float, parts)
+                ts.append(t), h.append(hh), vx.append(vv)
+                roll.append(rr), pitch.append(pp), cmd.append(cc)
+    except Exception:
+        return None
+    ts = np.asarray(ts)
+    if not len(ts):
+        return None
+    idx = np.clip(np.searchsorted(ts, np.asarray(log_t), side="right") - 1,
+                  0, len(ts) - 1)
+    return {
+        "t": [float(ts[i]) for i in idx],
+        "h": [float(h[i]) for i in idx],
+        "vx": [float(vx[i]) for i in idx],
+        "roll": [float(roll[i]) for i in idx],
+        "pitch": [float(pitch[i]) for i in idx],
+        "cmd": [float(cmd[i]) for i in idx],
+    }
 
 
 def read_telemetry(retries: int = 30):
@@ -70,12 +100,12 @@ def read_telemetry(retries: int = 30):
 
 
 def run_mode(mode: str, seed: int = 7, perturb: list | None = None,
-             task: list | None = None):
+             task: list | None = None, capture: bool = False):
     step0 = time.monotonic()
     set_simulator_data_source(
         "bridge_g1:create",
         config={"duration_sec": DURATION_SEC, "cmd_vx": BASE_VX, "seed": seed,
-                "perturb": perturb, "task": task},
+                "perturb": perturb, "task": task, "capture_state": capture},
         metadata=SimulatorDataSourceMetadata(
             channel_count=N_CHANNELS,
             frames_per_second=25000,
@@ -99,6 +129,7 @@ def run_mode(mode: str, seed: int = 7, perturb: list | None = None,
         lesion_ch = set()
 
     log_t, log_cmd, log_nspk, log_h, log_tau, log_t62 = [], [], [], [], [], []
+    log_counts, log_x = [], []
     prev = np.zeros(N_CHANNELS)
     applied_vx = 0.0
     applied_tau = 0.0
@@ -112,13 +143,18 @@ def run_mode(mode: str, seed: int = 7, perturb: list | None = None,
                 intervals_us.append(1e6 * (now - last_iter_wall))
             last_iter_wall = now
 
-            frames = tick.frames.astype(np.float32) if tick.frames is not None \
-                else np.zeros((0, N_CHANNELS))
-            below = frames < THR
-            prev_on = (prev >= THR)[None, :]
-            down_cross = below & np.vstack([prev_on, frames[:-1] >= THR])
-            counts = down_cross.sum(axis=0).astype(float)
-            prev = frames[-1] if len(frames) else prev
+            if mode == "poisson":
+                counts = rng.poisson(lam=POISSON_LAM,
+                                     size=N_CHANNELS).astype(float)
+                prev = np.zeros(N_CHANNELS)
+            else:
+                frames = tick.frames.astype(np.float32) if tick.frames is not None \
+                    else np.zeros((0, N_CHANNELS))
+                below = frames < THR
+                prev_on = (prev >= THR)[None, :]
+                down_cross = below & np.vstack([prev_on, frames[:-1] >= THR])
+                counts = down_cross.sum(axis=0).astype(float)
+                prev = frames[-1] if len(frames) else prev
 
             if lesion_ch:
                 counts[list(lesion_ch)] = 0.0
@@ -162,9 +198,13 @@ def run_mode(mode: str, seed: int = 7, perturb: list | None = None,
             log_nspk.append(nspk)
             log_h.append(float(counts[CH_HEIGHT]))
             log_t62.append(float(counts[CH_VX_OVERRIDE]))
+            log_counts.append(counts.tolist())
+            log_x.append(x.tolist())
 
     wall = time.monotonic() - wall0
     hub.stop()
+
+    state_align = _align_state(log_t) if capture else None
 
     walk, walk_series = read_telemetry()
     iv = np.asarray(intervals_us, dtype=float)
@@ -204,6 +244,10 @@ def run_mode(mode: str, seed: int = 7, perturb: list | None = None,
                             for s in walk_series]
     res["_wall_step"] = round(time.monotonic() - step0, 1)
     res["_latency_hist"] = [round(float(v), 0) for v in intervals_us]
+    if capture:
+        res["counts_matrix"] = [[round(v, 1) for v in row] for row in log_counts]
+        res["x_matrix"] = [[round(v, 3) for v in row] for row in log_x]
+        res["state_aligned"] = state_align
     return res
 
 

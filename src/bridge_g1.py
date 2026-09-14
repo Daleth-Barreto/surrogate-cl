@@ -25,6 +25,8 @@ _SRC = Path(__file__).resolve().parent
 SNN_SRC = Path("C:/Proyectos/papers/Icra2027/01_snn/src")
 TELEMETRY_PATH = str(Path.home() / "AppData" / "Local" / "Temp" / "opencode"
                      / "bridge_telemetry.json")
+STATE_TSV_PATH = str(Path.home() / "AppData" / "Local" / "Temp" / "opencode"
+                     / "bridge_state.tsv")
 sys.path.insert(0, str(SNN_SRC))
 
 CH_FSR, CH_ATT = 12, 3
@@ -43,12 +45,14 @@ TAU_GAIN = 40.0        # Nm per decoder unit on torque channels (<12)
 class G1DataSource(SimulatorDataSource):
     def __init__(self, duration_sec: float = 14.0, cmd_vx: float = 0.8,
                  seed: int = 0, perturb: list | None = None,
-                 task: list | None = None):
+                 task: list | None = None, capture_state: bool = False):
         self.duration_sec = duration_sec
         self.cmd_vx = float(cmd_vx)
         self.seed = seed
         self.perturbations = perturb or []
         self.task_sched = task or []
+        self.capture_state = bool(capture_state)
+        self._state_fp = None
         self._pelvis_id = None
         self._perturbed_steps = 0
         self._rng = np.random.default_rng(seed)
@@ -88,6 +92,11 @@ class G1DataSource(SimulatorDataSource):
         pass
 
     def close(self):
+        if self._state_fp is not None:
+            try:
+                self._state_fp.close()
+            except Exception:
+                pass
         self._save_telemetry()
         self.dep.close()
 
@@ -101,16 +110,19 @@ class G1DataSource(SimulatorDataSource):
                 v = vx
         return v
 
-    def _read_sensors(self):
+    def _get_att(self):
         d = self.dep.data
-        err = self.dep.target - d.qpos[7:]
-        roll = np.arctan2(2 * (d.qpos[7] * 0 + 0 * d.qpos[5]), 1)  # placeholder
         q = d.qpos[3:7]
-        e = d.qvel[3:6]
         pitch = np.arctan2(2 * (q[3] * q[2] + q[0] * q[1]),
                            1 - 2 * (q[1] * q[1] + q[2] * q[2]))
         roll = np.arctan2(2 * (q[2] * q[3] + q[0] * q[1]),
                           1 - 2 * (q[1] * q[1] + q[2] * q[2]))
+        return float(roll), float(pitch)
+
+    def _read_sensors(self):
+        d = self.dep.data
+        err = self.dep.target - d.qpos[7:]
+        roll, pitch = self._get_att()
         att = np.array([roll, pitch, d.qvel[3]])
         h = d.qpos[2]
         s = np.zeros(64, dtype=np.float32)
@@ -152,6 +164,15 @@ class G1DataSource(SimulatorDataSource):
                                float(self.dep.data.qvel[0]),
                                (self.cmd_override if self.cmd_override is not None
                                 else float(self.dep.cmd[0]))))
+        if self.capture_state:
+            if self._state_fp is None:
+                self._state_fp = open(STATE_TSV_PATH, "w")
+            roll, pitch = self._get_att()
+            cmd_eff = (self.cmd_override if self.cmd_override is not None
+                       else float(self.dep.cmd[0]))
+            self._state_fp.write("%.4f\t%.4f\t%.4f\t%.4f\t%.4f\t%.3f\n" % (
+                float(self.dep.data.time), float(self.dep.data.qpos[2]),
+                float(self.dep.data.qvel[0]), roll, pitch, cmd_eff))
         if len(self.telemetry) % 25 == 0:
             self._save_telemetry()
 
@@ -282,6 +303,8 @@ class G1DataSource(SimulatorDataSource):
 
 
 def create(duration_sec: float = 14.0, cmd_vx: float = 0.8, seed: int = 0,
-           perturb: list | None = None, task: list | None = None):
+           perturb: list | None = None, task: list | None = None,
+           capture_state: bool = False):
     return G1DataSource(duration_sec=duration_sec, cmd_vx=cmd_vx, seed=seed,
-                        perturb=perturb, task=task)
+                        perturb=perturb, task=task,
+                        capture_state=capture_state)
