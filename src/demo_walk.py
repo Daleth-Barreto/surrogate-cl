@@ -49,7 +49,7 @@ def decide(x):
     roll, pitch, thsig, nspk, _ = x
     gate = _sig(30.0 * (nspk - 0.15))
     slow = 1.0 - 0.9 * _sig(10.0 * (max(abs(roll), abs(pitch)) - 0.9))
-    vx = BASE_VX * (1.0 + 1.0 * np.tanh(2.5 * (thsig - 0.15))) * gate * slow
+    vx = max(0.0, min(0.75, (thsig - 0.0615) / 0.277)) * gate * slow
     tau = TAU_UNITS * np.tanh(2.0 * TAU_SIGN * roll)
     return [float(vx), float(tau)]
 

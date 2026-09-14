@@ -1,0 +1,13 @@
+{
+  "tau_available_nm": 30.0,
+  "tau_tipping_nm": 112.0,
+  "deadline_ms": 25.0,
+  "lateral_frontier_s_at_140N": "0.40 survived / 0.45 fell",
+  "lateral_closable_max": "dur < 0.45 s, F <= 140 N (base absorbs)",
+  "longitudinal": "fwd fell at 0.3 s/150 N; back survived 0.3 s/150 N (zero)",
+  "points": {
+    "n": 46,
+    "survived": 25,
+    "fell": 21
+  }
+}

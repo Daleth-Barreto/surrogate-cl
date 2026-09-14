@@ -26,7 +26,7 @@ import numpy as np
 
 from ablate_loop import run_mode, MODES, TPS, DURATION_SEC
 
-SEEDS = [1, 7, 13, 29, 55]
+SEEDS = [1, 7, 13, 29, 55, 91]
 DEFAULT_SEED = 7
 PASS_RMSE = 0.18
 
@@ -127,14 +127,17 @@ def _ci_mean(vals, n_resamp=5000):
             round(float(np.percentile(means, 97.5)), 3)]
 
 
-def _exact_paired_p(a, b):
+def _exact_paired_p(a, b, one_sided=False):
     d = np.asarray(a, dtype=float) - np.asarray(b, dtype=float)
-    T = abs(float(d.mean()))
+    T = float(d.mean())
     cnt = tot = 0
     for mask in range(1 << len(d)):
         signs = np.array([1 if (mask >> i) & 1 else -1 for i in range(len(d))])
-        Tp = abs(float((d * signs).mean()))
-        cnt += Tp >= T - 1e-9
+        Tp = float((d * signs).mean())
+        if one_sided:
+            cnt += Tp <= T + 1e-9
+        else:
+            cnt += abs(Tp) >= abs(T) - 1e-9
         tot += 1
     return cnt / tot
 
@@ -191,6 +194,7 @@ def paired_stats(neural_runs, ablated_runs):
         "delta_mean": round(float(a.mean() - b.mean()), 3),
         "cohen_dz": round(_cohen_dz(a, b), 2),
         "p_exact_perm": round(_exact_paired_p(a, b), 4),
+        "p_exact_1s": round(_exact_paired_p(a, b, one_sided=True), 4),
         "ci95": _ci_mean(a - b),
     }
 
@@ -210,9 +214,9 @@ def run_profile(name, sched):
         key = "neural_vs_" + ab
         stats[key] = paired_stats(per_seed_rows(per_seed, "neural"),
                                   per_seed_rows(per_seed, ab))
-        print("    %s: d=%+.2f p=%s delta=%+.3f" % (
+        print("    %s: d=%+.2f p(2s)=%s p(1s)=%s delta=%+.3f" % (
             key, stats[key]["cohen_dz"], stats[key]["p_exact_perm"],
-            stats[key]["delta_mean"]))
+            stats[key]["p_exact_1s"], stats[key]["delta_mean"]))
     time.sleep(0.3)
     return rows, per_seed, stats
 
@@ -262,7 +266,7 @@ def multi_figure(profiles_data):
     fig, axes = plt.subplots(2, 3, figsize=(16, 9))
     axs = axes.ravel()
     for i, name in enumerate(names):
-        rows = profiles_data[name]["rows"]
+        rows = [profiles_data[name]["rows"][m] for m in MODES]
         stats = profiles_data[name]["stats"]
         modes = [r["mode"] for r in rows]
         means = [r["rmse_mean"] for r in rows]
@@ -278,9 +282,9 @@ def multi_figure(profiles_data):
                         fmt="none", ecolor="firebrick", capsize=2)
         ax.axhline(PASS_RMSE, color="r", ls="--", lw=0.8)
         st = stats["neural_vs_random"]
-        ax.set_title("%s\np=%.3f d=%.2f Δ=%.3f" % (name, st["p_exact_perm"],
-                                                   st["cohen_dz"],
-                                                   st["delta_mean"]), fontsize=9)
+        ax.set_title("%s\np(2s)=%.3f p(1s)=%.3f d=%.2f Δ=%.3f" % (
+            name, st["p_exact_perm"], st["p_exact_1s"],
+            st["cohen_dz"], st["delta_mean"]), fontsize=9)
         ax.set_ylabel("RMSE" if i % 3 == 0 else "")
         ax.tick_params(axis="x", labelsize=8)
     ax = axs[5]
@@ -327,13 +331,13 @@ def main():
         global_rows[name] = profiles_data[name]["rows"]
     n_lt_random = sum(1 for n in PROFILES
                       if profiles_data[n]["stats"]["neural_vs_random"]["delta_mean"] < 0
-                      and profiles_data[n]["stats"]["neural_vs_random"]["p_exact_perm"] <= 0.05)
+                      and profiles_data[n]["stats"]["neural_vs_random"]["p_exact_1s"] <= 0.05)
     n_lt_zero = sum(1 for n in PROFILES
                     if profiles_data[n]["stats"]["neural_vs_zero"]["delta_mean"] < 0
-                    and profiles_data[n]["stats"]["neural_vs_zero"]["p_exact_perm"] <= 0.05)
+                    and profiles_data[n]["stats"]["neural_vs_zero"]["p_exact_1s"] <= 0.05)
     n_lt_mask = sum(1 for n in PROFILES
                     if profiles_data[n]["stats"]["neural_vs_mask0.5"]["delta_mean"] < 0
-                    and profiles_data[n]["stats"]["neural_vs_mask0.5"]["p_exact_perm"] <= 0.05)
+                    and profiles_data[n]["stats"]["neural_vs_mask0.5"]["p_exact_1s"] <= 0.05)
     out = {
         "profile": PROFILES[HEADLINE],
         "headline": HEADLINE,
@@ -362,7 +366,7 @@ def main():
     fig2.savefig(RES / "task_tracking_multi.png", dpi=140)
     print("saved:", RES / "task_tracking.json", RES / "task_tracking.png",
           RES / "task_tracking_multi.png")
-    print("GLOBAL: neural<random p<=0.05 in %d/%d, "
+    print("GLOBAL: neural<random p(1s)<=0.05 in %d/%d, "
           "<zero %d/%d, <mask0.5 %d/%d" % (
               n_lt_random, len(PROFILES), n_lt_zero, len(PROFILES),
               n_lt_mask, len(PROFILES)))
