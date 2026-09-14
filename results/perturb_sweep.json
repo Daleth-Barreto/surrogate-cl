@@ -1,0 +1,279 @@
+{
+  "block": "surrogate_cl / H1 load-bearing loop",
+  "duration_sec": 12.0,
+  "tps": 40,
+  "push_dur": 0.15,
+  "push_times": [
+    4.0,
+    8.0
+  ],
+  "forces": [
+    0.0,
+    50.0,
+    90.0,
+    140.0
+  ],
+  "chosen_f_star": 140.0,
+  "schedule": [
+    {
+      "t0": 4.0,
+      "dur": 0.15,
+      "force": [
+        0.0,
+        140.0,
+        0.0
+      ]
+    },
+    {
+      "t0": 8.0,
+      "dur": 0.15,
+      "force": [
+        0.0,
+        140.0,
+        0.0
+      ]
+    }
+  ],
+  "random_range": [
+    0.0,
+    2.0
+  ],
+  "decide_ref": "demo_walk.decide: gate=30*(nspk-0.15); slow=1-0.7*sig(8*(max(roll,pitch)-0.28))",
+  "interpretation": "H1 NO diferenciada en este punto de operacion: el lazo spike parece redundante aun bajo empuje lateral, F*=140N -> neural=False random=False zero=False mask0.5=False",
+  "matrix": {
+    "neural_fallen": {
+      "0.0": false,
+      "50.0": false,
+      "90.0": false,
+      "140.0": false
+    },
+    "random_fallen": {
+      "0.0": false,
+      "50.0": false,
+      "90.0": false,
+      "140.0": false
+    }
+  },
+  "entries": [
+    {
+      "mode": "neural",
+      "wall_time": 17.58,
+      "mean_cmd": 0.363,
+      "stim_events": 72,
+      "mean_nspk": 8.7,
+      "walker": {
+        "t_end": 12.000000000000677,
+        "h_last": 0.7747297796553259,
+        "vx_last": 0.3543122941062338,
+        "fallen": false,
+        "bridge_read": {
+          "n_calls": 69999,
+          "samples": 349995,
+          "mean_us": 17.37,
+          "max_us": 62000.0,
+          "min_us": 0.0
+        },
+        "cmd_last": 0.34718945622444153
+      },
+      "perturb_fy": 0.0
+    },
+    {
+      "mode": "random",
+      "wall_time": 17.33,
+      "mean_cmd": 0.51,
+      "stim_events": 487,
+      "mean_nspk": 9.56,
+      "walker": {
+        "t_end": 12.000000000000677,
+        "h_last": 0.7704036970858562,
+        "vx_last": 0.5446843824408921,
+        "fallen": false,
+        "bridge_read": {
+          "n_calls": 67499,
+          "samples": 337495,
+          "mean_us": 16.42,
+          "max_us": 78000.0,
+          "min_us": 0.0
+        },
+        "cmd_last": 0.5814277529716492
+      },
+      "perturb_fy": 0.0
+    },
+    {
+      "mode": "neural",
+      "wall_time": 17.12,
+      "mean_cmd": 0.365,
+      "stim_events": 71,
+      "mean_nspk": 8.73,
+      "walker": {
+        "t_end": 12.000000000000677,
+        "h_last": 0.774253614879386,
+        "vx_last": 0.3670011050583041,
+        "fallen": false,
+        "bridge_read": {
+          "n_calls": 67499,
+          "samples": 337495,
+          "mean_us": 20.21,
+          "max_us": 78000.0,
+          "min_us": 0.0
+        },
+        "cmd_last": 0.37019243836402893
+      },
+      "perturb_fy": 50.0
+    },
+    {
+      "mode": "random",
+      "wall_time": 17.59,
+      "mean_cmd": 0.51,
+      "stim_events": 487,
+      "mean_nspk": 9.62,
+      "walker": {
+        "t_end": 12.000000000000677,
+        "h_last": 0.7710361710698793,
+        "vx_last": 0.46952160958802375,
+        "fallen": false,
+        "bridge_read": {
+          "n_calls": 67499,
+          "samples": 337495,
+          "mean_us": 21.47,
+          "max_us": 63000.0,
+          "min_us": 0.0
+        },
+        "cmd_last": 0.6855411529541016
+      },
+      "perturb_fy": 50.0
+    },
+    {
+      "mode": "neural",
+      "wall_time": 17.45,
+      "mean_cmd": 0.348,
+      "stim_events": 49,
+      "mean_nspk": 8.82,
+      "walker": {
+        "t_end": 12.000000000000677,
+        "h_last": 0.7740761368427489,
+        "vx_last": 0.3621622084647034,
+        "fallen": false,
+        "bridge_read": {
+          "n_calls": 67499,
+          "samples": 337495,
+          "mean_us": 15.47,
+          "max_us": 78000.0,
+          "min_us": 0.0
+        },
+        "cmd_last": 0.3814707398414612
+      },
+      "perturb_fy": 90.0
+    },
+    {
+      "mode": "random",
+      "wall_time": 17.47,
+      "mean_cmd": 0.51,
+      "stim_events": 487,
+      "mean_nspk": 9.84,
+      "walker": {
+        "t_end": 12.000000000000677,
+        "h_last": 0.7712964090979233,
+        "vx_last": 0.43777799693696434,
+        "fallen": false,
+        "bridge_read": {
+          "n_calls": 67499,
+          "samples": 337495,
+          "mean_us": 16.67,
+          "max_us": 47000.0,
+          "min_us": 0.0
+        },
+        "cmd_last": 0.4938333332538605
+      },
+      "perturb_fy": 90.0
+    },
+    {
+      "mode": "neural",
+      "wall_time": 17.26,
+      "mean_cmd": 0.357,
+      "stim_events": 56,
+      "mean_nspk": 9.38,
+      "walker": {
+        "t_end": 12.000000000000677,
+        "h_last": 0.774629164165925,
+        "vx_last": 0.3473299711150744,
+        "fallen": false,
+        "bridge_read": {
+          "n_calls": 67499,
+          "samples": 337495,
+          "mean_us": 16.16,
+          "max_us": 78000.0,
+          "min_us": 0.0
+        },
+        "cmd_last": 0.3601500988006592
+      },
+      "perturb_fy": 140.0
+    },
+    {
+      "mode": "random",
+      "wall_time": 17.33,
+      "mean_cmd": 0.51,
+      "stim_events": 487,
+      "mean_nspk": 10.1,
+      "walker": {
+        "t_end": 12.000000000000677,
+        "h_last": 0.7677517646702465,
+        "vx_last": 0.4482143908924456,
+        "fallen": false,
+        "bridge_read": {
+          "n_calls": 67499,
+          "samples": 337495,
+          "mean_us": 17.54,
+          "max_us": 78000.0,
+          "min_us": 0.0
+        },
+        "cmd_last": 0.75
+      },
+      "perturb_fy": 140.0
+    },
+    {
+      "mode": "zero",
+      "wall_time": 17.05,
+      "mean_cmd": 0.0,
+      "stim_events": 0,
+      "mean_nspk": 7.96,
+      "walker": {
+        "t_end": 12.000000000000677,
+        "h_last": 0.7723665859269441,
+        "vx_last": 0.44932571465720295,
+        "fallen": false,
+        "bridge_read": {
+          "n_calls": 67499,
+          "samples": 337495,
+          "mean_us": 17.78,
+          "max_us": 78000.0,
+          "min_us": 0.0
+        },
+        "cmd_last": 0.5
+      },
+      "perturb_fy": 140.0
+    },
+    {
+      "mode": "mask0.5",
+      "wall_time": 17.34,
+      "mean_cmd": 0.323,
+      "stim_events": 59,
+      "mean_nspk": 6.5,
+      "walker": {
+        "t_end": 12.000000000000677,
+        "h_last": 0.7749503248091498,
+        "vx_last": 0.3215318450918553,
+        "fallen": false,
+        "bridge_read": {
+          "n_calls": 67499,
+          "samples": 337495,
+          "mean_us": 19.54,
+          "max_us": 62000.0,
+          "min_us": 0.0
+        },
+        "cmd_last": 0.37639668583869934
+      },
+      "perturb_fy": 140.0
+    }
+  ]
+}

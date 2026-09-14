@@ -1,0 +1,37 @@
+{
+  "goal_m": 5.4,
+  "rows": [
+    {
+      "mode": "neural",
+      "dist": 3.06,
+      "task_ok": false,
+      "fallen": false,
+      "mean_cmd": 0.265,
+      "vx_last": 0.24699968279388684
+    },
+    {
+      "mode": "zero",
+      "dist": 5.43,
+      "task_ok": true,
+      "fallen": false,
+      "mean_cmd": 0.0,
+      "vx_last": 0.49513515122099605
+    },
+    {
+      "mode": "random",
+      "dist": 4.21,
+      "task_ok": false,
+      "fallen": false,
+      "mean_cmd": 0.374,
+      "vx_last": 0.45676129709961893
+    },
+    {
+      "mode": "mask0.5",
+      "dist": 3.05,
+      "task_ok": false,
+      "fallen": false,
+      "mean_cmd": 0.231,
+      "vx_last": 0.23560849367413206
+    }
+  ]
+}
