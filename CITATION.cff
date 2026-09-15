@@ -1,0 +1,24 @@
+cff-version: 1.2.0
+message: "If you use this software in your research, please cite it (and the project-level registry) as follows."
+title: "surrogate-cl: load-bearing substrate validation on the Cortical Labs contract"
+abstract: >-
+  Closed-loop experiment scaffold validating that a task function trained
+  in-silico survives a simulated culture substrate through the Cortical Labs
+  contract (cl-sdk), measured with mutual information, transfer entropy and a
+  physical authority envelope on a Unitree G1 humanoid in MuJoCo.
+keywords:
+  - neuromorphic computing
+  - spiking neural networks
+  - wetware
+  - closed-loop control
+  - humanoid locomotion
+  - mutual information
+  - transfer entropy
+license: MIT
+version: 0.1.0
+date-released: "2026-09-14"
+authors:
+  - family-names: Barreto
+    given-names: Daleth
+    email: alandaleth.hb@gmail.com
+repository-code: "https://github.com/Daleth-Barreto/surrogate-cl"
