@@ -30,6 +30,7 @@ SEEDS = [7, 29]
 PROFILE = [(0.0, 0.5), (4.0, 0.8), (8.0, 0.5)]
 N_PERM = 50
 RNG = np.random.default_rng(2026)
+CH_VX_OVERRIDE = 62
 
 
 def load_runs():
@@ -47,6 +48,7 @@ def load_runs():
             runs[mode][seed] = {
                 "counts": counts,
                 "nspk": counts.sum(axis=1),
+                "c62": counts[:, CH_VX_OVERRIDE],
                 "vx_cmd": np.asarray(r["cmd_series"], dtype=float),
                 "vx_applied": np.asarray(st["cmd"], dtype=float),
                 "vx": np.asarray(st["vx"], dtype=float),
@@ -134,6 +136,8 @@ def main():
             mi_vx, mi_h = channel_mi(d["counts"], vx, h)
             te_spk_cmd = {k: bias_correct(te_binned, d["nspk"], d["vx_cmd"], k)
                           for k in (1, 2, 4, 6, 8)}
+            te_c62_cmd = {k: bias_correct(te_binned, d["c62"], d["vx_cmd"], k)
+                          for k in (1, 2, 4, 6, 8)}
             te_cmd_plant = {k: bias_correct(te_binned, d["vx_cmd"], d["vx"], k)
                             for k in (1, 2, 4, 6, 8)}
             summary[mode][seed] = {
@@ -148,6 +152,7 @@ def main():
                 "channel_mi_vx": mi_vx.tolist(),
                 "channel_mi_h": mi_h.tolist(),
                 "te_spikes_to_cmd": te_spk_cmd,
+                "te_c62_to_cmd": te_c62_cmd,
                 "te_cmd_to_plant": te_cmd_plant,
             }
 
@@ -160,6 +165,10 @@ def main():
                                "mi_cmd_applied"]}
         agg[mode]["te_spikes_to_cmd_lag2"] = float(np.mean(
             [summary[mode][s]["te_spikes_to_cmd"][2] for s in keys]))
+        agg[mode]["te_c62_to_cmd_lag2"] = float(np.mean(
+            [summary[mode][s]["te_c62_to_cmd"][2] for s in keys]))
+        agg[mode]["geo_mi_vx_sum"] = float(np.mean(
+            [np.sum(summary[mode][s]["channel_mi_vx"]) for s in keys]))
 
     with open(RES / "f2_signal_summary.json", "w", encoding="utf-8") as fp:
         json.dump({"modes": MODES, "seeds": SEEDS, "n_perm": N_PERM,
@@ -180,7 +189,7 @@ def main():
         vals = [agg[mode][n] for n in
                 ["mi_cmd_plant", "mi_cmd_task", "mi_nspk_vx"]]
         vals.append(float(np.mean(
-            [summary[mode][s]["te_spikes_to_cmd"][2] for s in summary[mode]])))
+            [summary[mode][s]["te_c62_to_cmd"][2] for s in summary[mode]])))
         axes[1][j].bar(names, vals)
         axes[1][j].tick_params(axis="x", rotation=90, labelsize=8)
         lags = [1, 2, 4, 6, 8]
@@ -199,8 +208,8 @@ def main():
     for m in MODES:
         print(f"  {m:<8} mi_cmd_plant={agg[m]['mi_cmd_plant']:.4f} "
               f"mi_cmd_task={agg[m]['mi_cmd_task']:.4f} "
-              f"mi_nspk_vx={agg[m]['mi_nspk_vx']:.4f} "
-              f"te_spk_cmd_lag2={agg[m]['te_spikes_to_cmd_lag2']:.4f}")
+              f"te_c62_cmd_lag2={agg[m]['te_c62_to_cmd_lag2']:.4f} "
+              f"geo_mi_vx_sum={agg[m]['geo_mi_vx_sum']:.4f}")
 
 
 if __name__ == "__main__":

@@ -28,79 +28,79 @@
       "seed": 7,
       "file": "f1_capture_neural_s7.json",
       "ticks": 500,
-      "wall": 19.8,
+      "wall": 51.3,
       "fallen": false,
-      "n_spikes_mean": 9.02
+      "n_spikes_mean": 8.9
     },
     {
       "mode": "neural",
       "seed": 29,
       "file": "f1_capture_neural_s29.json",
       "ticks": 500,
-      "wall": 19.0,
+      "wall": 53.4,
       "fallen": false,
-      "n_spikes_mean": 8.87
+      "n_spikes_mean": 8.9
     },
     {
       "mode": "zero",
       "seed": 7,
       "file": "f1_capture_zero_s7.json",
       "ticks": 500,
-      "wall": 18.4,
+      "wall": 53.2,
       "fallen": false,
-      "n_spikes_mean": 7.94
+      "n_spikes_mean": 7.81
     },
     {
       "mode": "zero",
       "seed": 29,
       "file": "f1_capture_zero_s29.json",
       "ticks": 500,
-      "wall": 18.1,
+      "wall": 50.6,
       "fallen": false,
-      "n_spikes_mean": 8.24
+      "n_spikes_mean": 8.09
     },
     {
       "mode": "random",
       "seed": 7,
       "file": "f1_capture_random_s7.json",
       "ticks": 500,
-      "wall": 20.5,
+      "wall": 54.6,
       "fallen": false,
-      "n_spikes_mean": 9.4
+      "n_spikes_mean": 9.04
     },
     {
       "mode": "random",
       "seed": 29,
       "file": "f1_capture_random_s29.json",
       "ticks": 500,
-      "wall": 21.9,
+      "wall": 57.0,
       "fallen": false,
-      "n_spikes_mean": 9.35
+      "n_spikes_mean": 9.14
     },
     {
       "mode": "mask0.5",
       "seed": 7,
       "file": "f1_capture_mask0.5_s7.json",
       "ticks": 500,
-      "wall": 18.2,
+      "wall": 49.5,
       "fallen": false,
-      "n_spikes_mean": 5.89
+      "n_spikes_mean": 5.59
     },
     {
       "mode": "mask0.5",
       "seed": 29,
       "file": "f1_capture_mask0.5_s29.json",
       "ticks": 500,
-      "wall": 19.3,
+      "wall": 55.0,
       "fallen": false,
-      "n_spikes_mean": 3.77
+      "n_spikes_mean": 3.61
     },
     {
       "mode": "poisson",
       "seed": 7,
       "file": "f1_capture_poisson_s7.json",
       "ticks": 500,
-      "wall": 21.9,
+      "wall": 52.0,
       "fallen": false,
       "n_spikes_mean": 9.21
     },
@@ -109,7 +109,7 @@
       "seed": 29,
       "file": "f1_capture_poisson_s29.json",
       "ticks": 500,
-      "wall": 18.3,
+      "wall": 43.4,
       "fallen": false,
       "n_spikes_mean": 8.93
     }
