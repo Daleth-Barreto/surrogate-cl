@@ -1,4 +1,21 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+venv/
 
-!results/
+# Editors / OS
+.idea/
+.vscode/
+.ipynb_checkpoints/
+.DS_Store
+
+# Logs
+*.log
+*_log.txt
+
+# results/: tracked subtree, only committed json/png artefacts
+results/*
 !results/*.json
 !results/*.png
