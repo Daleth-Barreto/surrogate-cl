@@ -105,21 +105,21 @@ An initial audit found that in the first version of the loop the decoded velocit
 
 ```
 surrogate_cl/
-├── src/
-│   ├── bridge_g1.py           # CL datasource of the G1 walker (perturb, task, state TSV)
-│   ├── demo_walk.py           # Nengo-LIF hub + calibrated decide
-│   ├── ablate_loop.py         # 5-mode runner + spike sorting + state alignment
-│   ├── capture_signal.py      # per-tick counts[64]+state captures (Gate A raw data)
-│   ├── signal_analysis.py     # MI / TE / channel MI, bias-corrected (Gate A)
-│   ├── probe_frontier.py      # lateral impulse frontier sweep
-│   ├── envelope.py            # authority x latency envelope figure + json
-│   ├── task_tracking.py       # multi-profile tracking battery (H1 primary)
-│   ├── perturb_sweep.py       # flat-ground lateral sweep
-│   ├── probe_push.py          # sustained push probes (authority limit)
-│   └── task_progress.py       # flat-ground distance / task progress
-├── results/                   # json + png artefacts (see table below)
-├── requirements.lock.txt      # pinned environment (uv freeze)
-└── .gitignore
++- src/
+|  +- bridge_g1.py           # CL datasource of the G1 walker (perturb, task, state TSV)
+|  +- demo_walk.py           # Nengo-LIF hub + calibrated decide
+|  +- ablate_loop.py         # 5-mode runner + spike sorting + state alignment
+|  +- capture_signal.py      # per-tick counts[64]+state captures (Gate A raw data)
+|  +- signal_analysis.py     # MI / TE / channel MI, bias-corrected (Gate A)
+|  +- probe_frontier.py      # lateral impulse frontier sweep
+|  +- envelope.py            # authority x latency envelope figure + json
+|  +- task_tracking.py       # multi-profile tracking battery (H1 primary)
+|  +- perturb_sweep.py       # flat-ground lateral sweep
+|  +- probe_push.py          # sustained push probes (authority limit)
+|  +- task_progress.py       # flat-ground distance / task progress
++- results/                  # json + png artefacts (see table below)
++- requirements.lock.txt     # pinned environment (uv freeze)
++- .gitignore
 ```
 
 ## Reproducing the results
