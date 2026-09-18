@@ -1,0 +1,140 @@
+{
+  "seeds": [
+    7,
+    29,
+    13
+  ],
+  "failures": [
+    "healthy",
+    "freeze_lknee",
+    "freeze_rknee",
+    "freeze_lhip",
+    "degrade_50"
+  ],
+  "t_fault": 2.0,
+  "tps": 40,
+  "mode": "poisson",
+  "runs": [
+    {
+      "failure": "healthy",
+      "joint": null,
+      "label": "healthy",
+      "seed": 7,
+      "fallen_t": null,
+      "npz": "fault_dead_healthy_s7.npz"
+    },
+    {
+      "failure": "healthy",
+      "joint": null,
+      "label": "healthy",
+      "seed": 29,
+      "fallen_t": null,
+      "npz": "fault_dead_healthy_s29.npz"
+    },
+    {
+      "failure": "healthy",
+      "joint": null,
+      "label": "healthy",
+      "seed": 13,
+      "fallen_t": null,
+      "npz": "fault_dead_healthy_s13.npz"
+    },
+    {
+      "failure": "freeze_lknee",
+      "joint": 3,
+      "label": "left_knee",
+      "seed": 7,
+      "fallen_t": 3.268,
+      "npz": "fault_dead_freeze_lknee_s7.npz"
+    },
+    {
+      "failure": "freeze_lknee",
+      "joint": 3,
+      "label": "left_knee",
+      "seed": 29,
+      "fallen_t": 3.264,
+      "npz": "fault_dead_freeze_lknee_s29.npz"
+    },
+    {
+      "failure": "freeze_lknee",
+      "joint": 3,
+      "label": "left_knee",
+      "seed": 13,
+      "fallen_t": 3.296,
+      "npz": "fault_dead_freeze_lknee_s13.npz"
+    },
+    {
+      "failure": "freeze_rknee",
+      "joint": 9,
+      "label": "right_knee",
+      "seed": 7,
+      "fallen_t": 2.5,
+      "npz": "fault_dead_freeze_rknee_s7.npz"
+    },
+    {
+      "failure": "freeze_rknee",
+      "joint": 9,
+      "label": "right_knee",
+      "seed": 29,
+      "fallen_t": 2.602,
+      "npz": "fault_dead_freeze_rknee_s29.npz"
+    },
+    {
+      "failure": "freeze_rknee",
+      "joint": 9,
+      "label": "right_knee",
+      "seed": 13,
+      "fallen_t": 2.496,
+      "npz": "fault_dead_freeze_rknee_s13.npz"
+    },
+    {
+      "failure": "freeze_lhip",
+      "joint": 1,
+      "label": "left_hip_roll",
+      "seed": 7,
+      "fallen_t": 4.57,
+      "npz": "fault_dead_freeze_lhip_s7.npz"
+    },
+    {
+      "failure": "freeze_lhip",
+      "joint": 1,
+      "label": "left_hip_roll",
+      "seed": 29,
+      "fallen_t": 4.504,
+      "npz": "fault_dead_freeze_lhip_s29.npz"
+    },
+    {
+      "failure": "freeze_lhip",
+      "joint": 1,
+      "label": "left_hip_roll",
+      "seed": 13,
+      "fallen_t": 3.86,
+      "npz": "fault_dead_freeze_lhip_s13.npz"
+    },
+    {
+      "failure": "degrade_50",
+      "joint": 3,
+      "label": "left_leg",
+      "seed": 7,
+      "fallen_t": 3.944,
+      "npz": "fault_dead_degrade_50_s7.npz"
+    },
+    {
+      "failure": "degrade_50",
+      "joint": 3,
+      "label": "left_leg",
+      "seed": 29,
+      "fallen_t": 4.09,
+      "npz": "fault_dead_degrade_50_s29.npz"
+    },
+    {
+      "failure": "degrade_50",
+      "joint": 3,
+      "label": "left_leg",
+      "seed": 13,
+      "fallen_t": 3.944,
+      "npz": "fault_dead_degrade_50_s13.npz"
+    }
+  ],
+  "wall_sec": 509.0
+}

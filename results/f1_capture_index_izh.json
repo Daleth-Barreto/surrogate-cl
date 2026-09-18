@@ -1,0 +1,118 @@
+{
+  "duration_sec": 12.0,
+  "tps": 40,
+  "profile": [
+    [
+      0.0,
+      0.5
+    ],
+    [
+      4.0,
+      0.8
+    ],
+    [
+      8.0,
+      0.5
+    ]
+  ],
+  "seeds": [
+    7,
+    29
+  ],
+  "threshold": -1400,
+  "substrate": "izh",
+  "poisson_lam": 0.14,
+  "notes": "task-driven capture; counts[64]+state per tick (steps: counts,x aligned by tick.iteration; state hold-last from bridge TSV at 50 Hz)",
+  "runs": [
+    {
+      "mode": "neural",
+      "seed": 7,
+      "file": "f1_capture_izh_neural_s7.json",
+      "ticks": 500,
+      "wall": 23.1,
+      "fallen": false,
+      "n_spikes_mean": 7.65
+    },
+    {
+      "mode": "neural",
+      "seed": 29,
+      "file": "f1_capture_izh_neural_s29.json",
+      "ticks": 500,
+      "wall": 26.5,
+      "fallen": false,
+      "n_spikes_mean": 7.36
+    },
+    {
+      "mode": "zero",
+      "seed": 7,
+      "file": "f1_capture_izh_zero_s7.json",
+      "ticks": 500,
+      "wall": 30.1,
+      "fallen": false,
+      "n_spikes_mean": 6.78
+    },
+    {
+      "mode": "zero",
+      "seed": 29,
+      "file": "f1_capture_izh_zero_s29.json",
+      "ticks": 500,
+      "wall": 25.4,
+      "fallen": false,
+      "n_spikes_mean": 6.73
+    },
+    {
+      "mode": "random",
+      "seed": 7,
+      "file": "f1_capture_izh_random_s7.json",
+      "ticks": 500,
+      "wall": 24.9,
+      "fallen": false,
+      "n_spikes_mean": 7.57
+    },
+    {
+      "mode": "random",
+      "seed": 29,
+      "file": "f1_capture_izh_random_s29.json",
+      "ticks": 500,
+      "wall": 25.5,
+      "fallen": false,
+      "n_spikes_mean": 7.28
+    },
+    {
+      "mode": "mask0.5",
+      "seed": 7,
+      "file": "f1_capture_izh_mask0.5_s7.json",
+      "ticks": 500,
+      "wall": 25.1,
+      "fallen": false,
+      "n_spikes_mean": 4.79
+    },
+    {
+      "mode": "mask0.5",
+      "seed": 29,
+      "file": "f1_capture_izh_mask0.5_s29.json",
+      "ticks": 500,
+      "wall": 24.5,
+      "fallen": false,
+      "n_spikes_mean": 2.91
+    },
+    {
+      "mode": "poisson",
+      "seed": 7,
+      "file": "f1_capture_izh_poisson_s7.json",
+      "ticks": 500,
+      "wall": 24.6,
+      "fallen": false,
+      "n_spikes_mean": 9.21
+    },
+    {
+      "mode": "poisson",
+      "seed": 29,
+      "file": "f1_capture_izh_poisson_s29.json",
+      "ticks": 500,
+      "wall": 24.6,
+      "fallen": false,
+      "n_spikes_mean": 8.93
+    }
+  ]
+}

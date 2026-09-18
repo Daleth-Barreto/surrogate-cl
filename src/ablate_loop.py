@@ -100,12 +100,16 @@ def read_telemetry(retries: int = 30):
 
 
 def run_mode(mode: str, seed: int = 7, perturb: list | None = None,
-             task: list | None = None, capture: bool = False):
+             task: list | None = None, capture: bool = False,
+             scene: str | None = None, record_path: str | None = None,
+             substrate: str = "rate", failures: list | None = None):
     step0 = time.monotonic()
     set_simulator_data_source(
         "bridge_g1:create",
         config={"duration_sec": DURATION_SEC, "cmd_vx": BASE_VX, "seed": seed,
-                "perturb": perturb, "task": task, "capture_state": capture},
+                "perturb": perturb, "task": task, "capture_state": capture,
+                "scene": scene, "record_path": record_path,
+                "substrate": substrate, "failures": failures},
         metadata=SimulatorDataSourceMetadata(
             channel_count=N_CHANNELS,
             frames_per_second=25000,
@@ -173,7 +177,9 @@ def run_mode(mode: str, seed: int = 7, perturb: list | None = None,
             hub_vx = float(max(0.0, min(2.2, hub_l[0] if len(hub_l) else 0.0)))
             hub_tau = float(hub_l[1] if len(hub_l) > 1 else 0.0)
 
-            if mode in ("neural",) or mode.startswith("mask"):
+            if mode == "reference":
+                vx_cmd, tau_cmd = BASE_VX, 0.0
+            elif mode in ("neural",) or mode.startswith("mask"):
                 vx_cmd, tau_cmd = hub_vx, hub_tau
             elif mode == "zero":
                 vx_cmd, tau_cmd = 0.0, 0.0
@@ -183,15 +189,16 @@ def run_mode(mode: str, seed: int = 7, perturb: list | None = None,
             else:
                 vx_cmd, tau_cmd = hub_vx, hub_tau
 
-            if abs(vx_cmd - applied_vx) > VX_DEADBAND:
-                applied_vx = vx_cmd
-                if applied_vx > 1e-3:
-                    neurons.stim(CH_VX_OVERRIDE, _stim_current(applied_vx))
-            if abs(tau_cmd - applied_tau) > TAU_DEADBAND:
-                applied_tau = tau_cmd
-                if abs(applied_tau) > 1e-3:
-                    neurons.stim(TAU_HIP_L, _stim_current(applied_tau))
-                    neurons.stim(TAU_HIP_R, _stim_current(-applied_tau))
+            if mode != "reference":
+                if abs(vx_cmd - applied_vx) > VX_DEADBAND:
+                    applied_vx = vx_cmd
+                    if applied_vx > 1e-3:
+                        neurons.stim(CH_VX_OVERRIDE, _stim_current(applied_vx))
+                if abs(tau_cmd - applied_tau) > TAU_DEADBAND:
+                    applied_tau = tau_cmd
+                    if abs(applied_tau) > 1e-3:
+                        neurons.stim(TAU_HIP_L, _stim_current(applied_tau))
+                        neurons.stim(TAU_HIP_R, _stim_current(-applied_tau))
             log_t.append(tick.iteration / TPS)
             log_cmd.append(vx_cmd)
             log_tau.append(applied_tau)

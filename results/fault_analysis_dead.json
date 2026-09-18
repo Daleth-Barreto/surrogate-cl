@@ -1,0 +1,627 @@
+{
+  "seeds": [
+    7,
+    29,
+    13
+  ],
+  "failures": [
+    "freeze_lknee",
+    "freeze_rknee",
+    "freeze_lhip",
+    "degrade_50"
+  ],
+  "live": {
+    "freeze_lknee": {
+      "joint": 3,
+      "joint_name": "L_knee",
+      "auc_mean": 0.933,
+      "auc_seeds": [
+        0.964,
+        0.992,
+        0.843
+      ],
+      "det_t_mean": 2.0,
+      "lead_t_mean": 1.21,
+      "lead_t_seeds": [
+        1.17,
+        1.25,
+        1.2
+      ],
+      "fall_t_seeds": [
+        3.17,
+        3.25,
+        3.2
+      ],
+      "mean_total_pre": 11.5,
+      "mean_total_post": 17.7,
+      "top_delta_ch": 23,
+      "top_delta_ch_name": null,
+      "mi_mean_top_ch": 0.489,
+      "mi_sig_channels": 8,
+      "top_ch23_delta_mean": 2.1,
+      "per_seed": [
+        {
+          "seed": 7,
+          "fallen_t": 3.174,
+          "auc": 0.964,
+          "det_t": 2.0,
+          "lead_t": 1.17,
+          "mean_total_pre": 11.6,
+          "mean_total_post": 17.1,
+          "top_ch_delta": 3,
+          "top_delta_value": 2.44,
+          "top_channel23_delta": 2.08,
+          "top_ch_mi": 12
+        },
+        {
+          "seed": 29,
+          "fallen_t": 3.25,
+          "auc": 0.992,
+          "det_t": 2.0,
+          "lead_t": 1.25,
+          "mean_total_pre": 12.2,
+          "mean_total_post": 22.5,
+          "top_ch_delta": 5,
+          "top_delta_value": 2.42,
+          "top_channel23_delta": 2.25,
+          "top_ch_mi": 5
+        },
+        {
+          "seed": 13,
+          "fallen_t": 3.196,
+          "auc": 0.843,
+          "det_t": 2.0,
+          "lead_t": 1.2,
+          "mean_total_pre": 10.7,
+          "mean_total_post": 13.6,
+          "top_ch_delta": 23,
+          "top_delta_value": 1.99,
+          "top_channel23_delta": 1.99,
+          "top_ch_mi": 12
+        }
+      ]
+    },
+    "freeze_rknee": {
+      "joint": 9,
+      "joint_name": "R_knee",
+      "auc_mean": 0.989,
+      "auc_seeds": [
+        0.989,
+        0.986,
+        0.991
+      ],
+      "det_t_mean": 2.01,
+      "lead_t_mean": 0.58,
+      "lead_t_seeds": [
+        0.58,
+        0.56,
+        0.61
+      ],
+      "fall_t_seeds": [
+        2.58,
+        2.59,
+        2.61
+      ],
+      "mean_total_pre": 14.4,
+      "mean_total_post": 20.6,
+      "top_delta_ch": 23,
+      "top_delta_ch_name": null,
+      "mi_mean_top_ch": 0.518,
+      "mi_sig_channels": 14,
+      "top_ch23_delta_mean": 2.5,
+      "per_seed": [
+        {
+          "seed": 7,
+          "fallen_t": 2.58,
+          "auc": 0.989,
+          "det_t": 2.0,
+          "lead_t": 0.58,
+          "mean_total_pre": 14.3,
+          "mean_total_post": 21.7,
+          "top_ch_delta": 11,
+          "top_delta_value": 2.79,
+          "top_channel23_delta": 2.74,
+          "top_ch_mi": 9
+        },
+        {
+          "seed": 29,
+          "fallen_t": 2.588,
+          "auc": 0.986,
+          "det_t": 2.02,
+          "lead_t": 0.56,
+          "mean_total_pre": 14.2,
+          "mean_total_post": 19.2,
+          "top_ch_delta": 9,
+          "top_delta_value": 2.35,
+          "top_channel23_delta": 2.24,
+          "top_ch_mi": 9
+        },
+        {
+          "seed": 13,
+          "fallen_t": 2.606,
+          "auc": 0.991,
+          "det_t": 2.0,
+          "lead_t": 0.61,
+          "mean_total_pre": 14.6,
+          "mean_total_post": 21.0,
+          "top_ch_delta": 23,
+          "top_delta_value": 2.52,
+          "top_channel23_delta": 2.52,
+          "top_ch_mi": 11
+        }
+      ]
+    },
+    "freeze_lhip": {
+      "joint": 1,
+      "joint_name": "L_hip_roll",
+      "auc_mean": 0.89,
+      "auc_seeds": [
+        0.996,
+        0.795,
+        0.881
+      ],
+      "det_t_mean": 2.33,
+      "lead_t_mean": 3.07,
+      "lead_t_seeds": [
+        1.74,
+        5.06,
+        2.41
+      ],
+      "fall_t_seeds": [
+        3.94,
+        7.66,
+        4.58
+      ],
+      "mean_total_pre": 10.0,
+      "mean_total_post": 16.6,
+      "top_delta_ch": 1,
+      "top_delta_ch_name": "L_hip_roll",
+      "mi_mean_top_ch": 0.231,
+      "mi_sig_channels": 6,
+      "top_ch23_delta_mean": 1.06,
+      "per_seed": [
+        {
+          "seed": 7,
+          "fallen_t": 3.936,
+          "auc": 0.996,
+          "det_t": 2.2,
+          "lead_t": 1.74,
+          "mean_total_pre": 9.6,
+          "mean_total_post": 22.7,
+          "top_ch_delta": 10,
+          "top_delta_value": 1.95,
+          "top_channel23_delta": 1.88,
+          "top_ch_mi": 0
+        },
+        {
+          "seed": 29,
+          "fallen_t": 7.664,
+          "auc": 0.795,
+          "det_t": 2.6,
+          "lead_t": 5.06,
+          "mean_total_pre": 9.9,
+          "mean_total_post": 13.0,
+          "top_ch_delta": 1,
+          "top_delta_value": 1.38,
+          "top_channel23_delta": -0.31,
+          "top_ch_mi": 1
+        },
+        {
+          "seed": 13,
+          "fallen_t": 4.58,
+          "auc": 0.881,
+          "det_t": 2.17,
+          "lead_t": 2.41,
+          "mean_total_pre": 10.4,
+          "mean_total_post": 14.2,
+          "top_ch_delta": 23,
+          "top_delta_value": 1.61,
+          "top_channel23_delta": 1.61,
+          "top_ch_mi": 13
+        }
+      ]
+    },
+    "degrade_50": {
+      "joint": 3,
+      "joint_name": "L_knee",
+      "auc_mean": 0.995,
+      "auc_seeds": [
+        0.999,
+        0.99,
+        0.996
+      ],
+      "det_t_mean": 2.2,
+      "lead_t_mean": 1.79,
+      "lead_t_seeds": [
+        1.5,
+        1.78,
+        2.1
+      ],
+      "fall_t_seeds": [
+        3.92,
+        3.95,
+        4.1
+      ],
+      "mean_total_pre": 10.0,
+      "mean_total_post": 23.9,
+      "top_delta_ch": 23,
+      "top_delta_ch_name": null,
+      "mi_mean_top_ch": 0.445,
+      "mi_sig_channels": 11,
+      "top_ch23_delta_mean": 2.27,
+      "per_seed": [
+        {
+          "seed": 7,
+          "fallen_t": 3.924,
+          "auc": 0.999,
+          "det_t": 2.42,
+          "lead_t": 1.5,
+          "mean_total_pre": 11.2,
+          "mean_total_post": 23.4,
+          "top_ch_delta": 23,
+          "top_delta_value": 2.62,
+          "top_channel23_delta": 2.62,
+          "top_ch_mi": 23
+        },
+        {
+          "seed": 29,
+          "fallen_t": 3.952,
+          "auc": 0.99,
+          "det_t": 2.17,
+          "lead_t": 1.78,
+          "mean_total_pre": 9.5,
+          "mean_total_post": 21.0,
+          "top_ch_delta": 2,
+          "top_delta_value": 2.29,
+          "top_channel23_delta": 2.29,
+          "top_ch_mi": 23
+        },
+        {
+          "seed": 13,
+          "fallen_t": 4.102,
+          "auc": 0.996,
+          "det_t": 2.0,
+          "lead_t": 2.1,
+          "mean_total_pre": 9.2,
+          "mean_total_post": 27.4,
+          "top_ch_delta": 0,
+          "top_delta_value": 2.61,
+          "top_channel23_delta": 1.9,
+          "top_ch_mi": 6
+        }
+      ]
+    }
+  },
+  "dead": {
+    "freeze_lknee": {
+      "joint": 3,
+      "joint_name": "L_knee",
+      "auc_mean": 0.468,
+      "auc_seeds": [
+        0.496,
+        0.43,
+        0.478
+      ],
+      "det_t_mean": 8.23,
+      "lead_t_mean": -4.96,
+      "lead_t_seeds": [
+        -5.93,
+        -2.66,
+        -6.28
+      ],
+      "fall_t_seeds": [
+        3.27,
+        3.26,
+        3.3
+      ],
+      "mean_total_pre": 9.1,
+      "mean_total_post": 8.9,
+      "top_delta_ch": 0,
+      "top_delta_ch_name": "L_hip_pitch",
+      "mi_mean_top_ch": 0.0,
+      "mi_sig_channels": 0,
+      "top_ch23_delta_mean": 0.0,
+      "per_seed": [
+        {
+          "seed": 7,
+          "fallen_t": 3.268,
+          "auc": 0.496,
+          "det_t": 9.2,
+          "lead_t": -5.93,
+          "mean_total_pre": 8.9,
+          "mean_total_post": 9.1,
+          "top_ch_delta": 0,
+          "top_delta_value": 0.0,
+          "top_channel23_delta": 0.0,
+          "top_ch_mi": 0
+        },
+        {
+          "seed": 29,
+          "fallen_t": 3.264,
+          "auc": 0.43,
+          "det_t": 5.92,
+          "lead_t": -2.66,
+          "mean_total_pre": 9.2,
+          "mean_total_post": 8.7,
+          "top_ch_delta": 0,
+          "top_delta_value": 0.0,
+          "top_channel23_delta": 0.0,
+          "top_ch_mi": 0
+        },
+        {
+          "seed": 13,
+          "fallen_t": 3.296,
+          "auc": 0.478,
+          "det_t": 9.57,
+          "lead_t": -6.28,
+          "mean_total_pre": 9.3,
+          "mean_total_post": 8.9,
+          "top_ch_delta": 0,
+          "top_delta_value": 0.0,
+          "top_channel23_delta": 0.0,
+          "top_ch_mi": 0
+        }
+      ]
+    },
+    "freeze_rknee": {
+      "joint": 9,
+      "joint_name": "R_knee",
+      "auc_mean": 0.468,
+      "auc_seeds": [
+        0.496,
+        0.43,
+        0.478
+      ],
+      "det_t_mean": 8.23,
+      "lead_t_mean": -5.7,
+      "lead_t_seeds": [
+        -6.7,
+        -3.32,
+        -7.08
+      ],
+      "fall_t_seeds": [
+        2.5,
+        2.6,
+        2.5
+      ],
+      "mean_total_pre": 9.1,
+      "mean_total_post": 8.9,
+      "top_delta_ch": 0,
+      "top_delta_ch_name": "L_hip_pitch",
+      "mi_mean_top_ch": 0.0,
+      "mi_sig_channels": 0,
+      "top_ch23_delta_mean": 0.0,
+      "per_seed": [
+        {
+          "seed": 7,
+          "fallen_t": 2.5,
+          "auc": 0.496,
+          "det_t": 9.2,
+          "lead_t": -6.7,
+          "mean_total_pre": 8.9,
+          "mean_total_post": 9.1,
+          "top_ch_delta": 0,
+          "top_delta_value": 0.0,
+          "top_channel23_delta": 0.0,
+          "top_ch_mi": 0
+        },
+        {
+          "seed": 29,
+          "fallen_t": 2.602,
+          "auc": 0.43,
+          "det_t": 5.92,
+          "lead_t": -3.32,
+          "mean_total_pre": 9.2,
+          "mean_total_post": 8.7,
+          "top_ch_delta": 0,
+          "top_delta_value": 0.0,
+          "top_channel23_delta": 0.0,
+          "top_ch_mi": 0
+        },
+        {
+          "seed": 13,
+          "fallen_t": 2.496,
+          "auc": 0.478,
+          "det_t": 9.57,
+          "lead_t": -7.08,
+          "mean_total_pre": 9.3,
+          "mean_total_post": 8.9,
+          "top_ch_delta": 0,
+          "top_delta_value": 0.0,
+          "top_channel23_delta": 0.0,
+          "top_ch_mi": 0
+        }
+      ]
+    },
+    "freeze_lhip": {
+      "joint": 1,
+      "joint_name": "L_hip_roll",
+      "auc_mean": 0.468,
+      "auc_seeds": [
+        0.496,
+        0.43,
+        0.478
+      ],
+      "det_t_mean": 8.23,
+      "lead_t_mean": -3.92,
+      "lead_t_seeds": [
+        -4.63,
+        -1.42,
+        -5.71
+      ],
+      "fall_t_seeds": [
+        4.57,
+        4.5,
+        3.86
+      ],
+      "mean_total_pre": 9.1,
+      "mean_total_post": 8.9,
+      "top_delta_ch": 0,
+      "top_delta_ch_name": "L_hip_pitch",
+      "mi_mean_top_ch": 0.0,
+      "mi_sig_channels": 0,
+      "top_ch23_delta_mean": 0.0,
+      "per_seed": [
+        {
+          "seed": 7,
+          "fallen_t": 4.57,
+          "auc": 0.496,
+          "det_t": 9.2,
+          "lead_t": -4.63,
+          "mean_total_pre": 8.9,
+          "mean_total_post": 9.1,
+          "top_ch_delta": 0,
+          "top_delta_value": 0.0,
+          "top_channel23_delta": 0.0,
+          "top_ch_mi": 0
+        },
+        {
+          "seed": 29,
+          "fallen_t": 4.504,
+          "auc": 0.43,
+          "det_t": 5.92,
+          "lead_t": -1.42,
+          "mean_total_pre": 9.2,
+          "mean_total_post": 8.7,
+          "top_ch_delta": 0,
+          "top_delta_value": 0.0,
+          "top_channel23_delta": 0.0,
+          "top_ch_mi": 0
+        },
+        {
+          "seed": 13,
+          "fallen_t": 3.86,
+          "auc": 0.478,
+          "det_t": 9.57,
+          "lead_t": -5.71,
+          "mean_total_pre": 9.3,
+          "mean_total_post": 8.9,
+          "top_ch_delta": 0,
+          "top_delta_value": 0.0,
+          "top_channel23_delta": 0.0,
+          "top_ch_mi": 0
+        }
+      ]
+    },
+    "degrade_50": {
+      "joint": 3,
+      "joint_name": "L_knee",
+      "auc_mean": 0.468,
+      "auc_seeds": [
+        0.496,
+        0.43,
+        0.478
+      ],
+      "det_t_mean": 8.23,
+      "lead_t_mean": -4.24,
+      "lead_t_seeds": [
+        -5.26,
+        -1.83,
+        -5.63
+      ],
+      "fall_t_seeds": [
+        3.94,
+        4.09,
+        3.94
+      ],
+      "mean_total_pre": 9.1,
+      "mean_total_post": 8.9,
+      "top_delta_ch": 0,
+      "top_delta_ch_name": "L_hip_pitch",
+      "mi_mean_top_ch": 0.0,
+      "mi_sig_channels": 0,
+      "top_ch23_delta_mean": 0.0,
+      "per_seed": [
+        {
+          "seed": 7,
+          "fallen_t": 3.944,
+          "auc": 0.496,
+          "det_t": 9.2,
+          "lead_t": -5.26,
+          "mean_total_pre": 8.9,
+          "mean_total_post": 9.1,
+          "top_ch_delta": 0,
+          "top_delta_value": 0.0,
+          "top_channel23_delta": 0.0,
+          "top_ch_mi": 0
+        },
+        {
+          "seed": 29,
+          "fallen_t": 4.09,
+          "auc": 0.43,
+          "det_t": 5.92,
+          "lead_t": -1.83,
+          "mean_total_pre": 9.2,
+          "mean_total_post": 8.7,
+          "top_ch_delta": 0,
+          "top_delta_value": 0.0,
+          "top_channel23_delta": 0.0,
+          "top_ch_mi": 0
+        },
+        {
+          "seed": 13,
+          "fallen_t": 3.944,
+          "auc": 0.478,
+          "det_t": 9.57,
+          "lead_t": -5.63,
+          "mean_total_pre": 9.3,
+          "mean_total_post": 8.9,
+          "top_ch_delta": 0,
+          "top_delta_value": 0.0,
+          "top_channel23_delta": 0.0,
+          "top_ch_mi": 0
+        }
+      ]
+    }
+  },
+  "deltas": {
+    "freeze_lknee": {
+      "joint": 3,
+      "delta_auc": 0.465,
+      "delta_det_t": -6.23,
+      "delta_lead_t": 6.17,
+      "live_auc": 0.933,
+      "dead_auc": 0.468,
+      "live_top_delta_ch": 23,
+      "dead_top_delta_ch": 0,
+      "live_mi_sig": 8,
+      "dead_mi_sig": 0
+    },
+    "freeze_rknee": {
+      "joint": 9,
+      "delta_auc": 0.521,
+      "delta_det_t": -6.22,
+      "delta_lead_t": 6.28,
+      "live_auc": 0.989,
+      "dead_auc": 0.468,
+      "live_top_delta_ch": 23,
+      "dead_top_delta_ch": 0,
+      "live_mi_sig": 14,
+      "dead_mi_sig": 0
+    },
+    "freeze_lhip": {
+      "joint": 1,
+      "delta_auc": 0.422,
+      "delta_det_t": -5.9,
+      "delta_lead_t": 6.99,
+      "live_auc": 0.89,
+      "dead_auc": 0.468,
+      "live_top_delta_ch": 1,
+      "dead_top_delta_ch": 0,
+      "live_mi_sig": 6,
+      "dead_mi_sig": 0
+    },
+    "degrade_50": {
+      "joint": 3,
+      "delta_auc": 0.527,
+      "delta_det_t": -6.03,
+      "delta_lead_t": 6.03,
+      "live_auc": 0.995,
+      "dead_auc": 0.468,
+      "live_top_delta_ch": 23,
+      "dead_top_delta_ch": 0,
+      "live_mi_sig": 11,
+      "dead_mi_sig": 0
+    }
+  }
+}

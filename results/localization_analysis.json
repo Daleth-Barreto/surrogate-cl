@@ -1,0 +1,336 @@
+{
+  "seeds": [
+    7,
+    29,
+    13
+  ],
+  "failures": [
+    "freeze_lknee",
+    "freeze_rknee",
+    "freeze_lhip",
+    "degrade_50"
+  ],
+  "tps": 40,
+  "results": {
+    "freeze_lknee": {
+      "joint": 3,
+      "joint_name": "L_knee",
+      "seeds": [
+        7,
+        29,
+        13
+      ],
+      "top_channels_per_seed": [
+        3,
+        5,
+        23
+      ],
+      "majority_channel": 3,
+      "majority_channel_name": "L_knee",
+      "top_mean_delta_ch": 3,
+      "top_mean_delta_ch_name": "L_knee",
+      "top1_hit": 1,
+      "top3_hit": 1,
+      "top5_hit": 1,
+      "ch23_delta_per_seed": [
+        1.86,
+        2.1,
+        1.97
+      ],
+      "ch23_delta_mean": 1.98,
+      "top5_channels": [
+        [
+          3,
+          3
+        ],
+        [
+          23,
+          3
+        ],
+        [
+          12,
+          3
+        ],
+        [
+          13,
+          2
+        ],
+        [
+          4,
+          2
+        ]
+      ],
+      "per_seed": [
+        {
+          "seed": 7,
+          "top_ch": 3,
+          "joint": 3,
+          "ch23_delta": 1.86
+        },
+        {
+          "seed": 29,
+          "top_ch": 5,
+          "joint": 3,
+          "ch23_delta": 2.1
+        },
+        {
+          "seed": 13,
+          "top_ch": 23,
+          "joint": 3,
+          "ch23_delta": 1.97
+        }
+      ]
+    },
+    "freeze_rknee": {
+      "joint": 9,
+      "joint_name": "R_knee",
+      "seeds": [
+        7,
+        29,
+        13
+      ],
+      "top_channels_per_seed": [
+        11,
+        9,
+        23
+      ],
+      "majority_channel": 9,
+      "majority_channel_name": "R_knee",
+      "top_mean_delta_ch": 11,
+      "top_mean_delta_ch_name": "R_ank_roll",
+      "top1_hit": 1,
+      "top3_hit": 1,
+      "top5_hit": 1,
+      "ch23_delta_per_seed": [
+        2.53,
+        2.09,
+        2.5
+      ],
+      "ch23_delta_mean": 2.37,
+      "top5_channels": [
+        [
+          11,
+          3
+        ],
+        [
+          23,
+          3
+        ],
+        [
+          9,
+          3
+        ],
+        [
+          12,
+          3
+        ],
+        [
+          13,
+          2
+        ]
+      ],
+      "per_seed": [
+        {
+          "seed": 7,
+          "top_ch": 11,
+          "joint": 9,
+          "ch23_delta": 2.53
+        },
+        {
+          "seed": 29,
+          "top_ch": 9,
+          "joint": 9,
+          "ch23_delta": 2.09
+        },
+        {
+          "seed": 13,
+          "top_ch": 23,
+          "joint": 9,
+          "ch23_delta": 2.5
+        }
+      ]
+    },
+    "freeze_lhip": {
+      "joint": 1,
+      "joint_name": "L_hip_roll",
+      "seeds": [
+        7,
+        29,
+        13
+      ],
+      "top_channels_per_seed": [
+        6,
+        1,
+        23
+      ],
+      "majority_channel": 1,
+      "majority_channel_name": "L_hip_roll",
+      "top_mean_delta_ch": 1,
+      "top_mean_delta_ch_name": "L_hip_roll",
+      "top1_hit": 1,
+      "top3_hit": 1,
+      "top5_hit": 1,
+      "ch23_delta_per_seed": [
+        1.66,
+        -0.46,
+        1.59
+      ],
+      "ch23_delta_mean": 0.93,
+      "top5_channels": [
+        [
+          23,
+          3
+        ],
+        [
+          10,
+          2
+        ],
+        [
+          1,
+          2
+        ],
+        [
+          4,
+          2
+        ],
+        [
+          6,
+          1
+        ]
+      ],
+      "per_seed": [
+        {
+          "seed": 7,
+          "top_ch": 6,
+          "joint": 1,
+          "ch23_delta": 1.66
+        },
+        {
+          "seed": 29,
+          "top_ch": 1,
+          "joint": 1,
+          "ch23_delta": -0.46
+        },
+        {
+          "seed": 13,
+          "top_ch": 23,
+          "joint": 1,
+          "ch23_delta": 1.59
+        }
+      ]
+    },
+    "degrade_50": {
+      "joint": 3,
+      "joint_name": "L_knee",
+      "seeds": [
+        7,
+        29,
+        13
+      ],
+      "top_channels_per_seed": [
+        23,
+        2,
+        0
+      ],
+      "majority_channel": 0,
+      "majority_channel_name": "L_hip_pitch",
+      "top_mean_delta_ch": 23,
+      "top_mean_delta_ch_name": null,
+      "top1_hit": 0,
+      "top3_hit": 0,
+      "top5_hit": 1,
+      "ch23_delta_per_seed": [
+        2.41,
+        2.14,
+        1.88
+      ],
+      "ch23_delta_mean": 2.14,
+      "top5_channels": [
+        [
+          23,
+          3
+        ],
+        [
+          2,
+          2
+        ],
+        [
+          0,
+          2
+        ],
+        [
+          14,
+          2
+        ],
+        [
+          3,
+          1
+        ]
+      ],
+      "per_seed": [
+        {
+          "seed": 7,
+          "top_ch": 23,
+          "joint": 3,
+          "ch23_delta": 2.41
+        },
+        {
+          "seed": 29,
+          "top_ch": 2,
+          "joint": 3,
+          "ch23_delta": 2.14
+        },
+        {
+          "seed": 13,
+          "top_ch": 0,
+          "joint": 3,
+          "ch23_delta": 1.88
+        }
+      ]
+    }
+  },
+  "classifier": {
+    "method": "nearest-centroid, leave-one-seed-out",
+    "n_samples": 12,
+    "accuracy": 0.583,
+    "chance": 0.25,
+    "per_class_accuracy": {
+      "freeze_lknee": 0.667,
+      "freeze_rknee": 1.0,
+      "freeze_lhip": 0.333,
+      "degrade_50": 0.333
+    },
+    "confusion": {
+      "freeze_lknee": [
+        2,
+        0,
+        0,
+        1
+      ],
+      "freeze_rknee": [
+        0,
+        3,
+        0,
+        0
+      ],
+      "freeze_lhip": [
+        1,
+        0,
+        1,
+        1
+      ],
+      "degrade_50": [
+        1,
+        0,
+        1,
+        1
+      ]
+    },
+    "labels": [
+      "freeze_lknee",
+      "freeze_rknee",
+      "freeze_lhip",
+      "degrade_50"
+    ]
+  }
+}

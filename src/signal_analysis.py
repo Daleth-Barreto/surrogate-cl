@@ -13,6 +13,7 @@ against a shuffle null (50 permutations). Reported in nats.
 """
 from __future__ import annotations
 
+import argparse
 import json
 import sys
 from pathlib import Path
@@ -33,12 +34,12 @@ RNG = np.random.default_rng(2026)
 CH_VX_OVERRIDE = 62
 
 
-def load_runs():
+def load_runs(pre=""):
     runs = {}
     for mode in MODES:
         runs[mode] = {}
         for seed in SEEDS:
-            p = RES / f"f1_capture_{mode}_s{seed}.json"
+            p = RES / f"f1_capture{pre}_{mode}_s{seed}.json"
             if not p.exists():
                 continue
             with open(p, encoding="utf-8") as fp:
@@ -124,7 +125,16 @@ def channel_mi(counts, vx, h):
 
 
 def main():
-    runs = load_runs()
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--tag", default="",
+                        help="capture suffix, e.g. 'izh' reads f1_capture_izh_*")
+    args = parser.parse_args()
+    tag = args.tag
+    pre = ("_" + tag) if tag else ""
+    runs = load_runs(pre=pre)
+    if not runs or all(not runs[m] for m in MODES):
+        print("no captures found for tag=%r" % tag)
+        return
     summary = {m: {} for m in MODES}
     for mode in MODES:
         for seed, d in runs[mode].items():
@@ -170,8 +180,9 @@ def main():
         agg[mode]["geo_mi_vx_sum"] = float(np.mean(
             [np.sum(summary[mode][s]["channel_mi_vx"]) for s in keys]))
 
-    with open(RES / "f2_signal_summary.json", "w", encoding="utf-8") as fp:
-        json.dump({"modes": MODES, "seeds": SEEDS, "n_perm": N_PERM,
+    with open(RES / ("f2_signal%s.json" % pre), "w", encoding="utf-8") as fp:
+        json.dump({"tag": tag, "modes": MODES, "seeds": SEEDS,
+                   "n_perm": N_PERM,
                    "units": "nats, bias-corrected (shuffle null)",
                    "per_run": summary, "aggregate": agg}, fp, indent=1)
 
@@ -200,10 +211,12 @@ def main():
         axes[2][j].set_xlabel("TE spikes->cmd, lag (ticks)")
         axes[2][j].legend(fontsize=7)
     axes[1][0].set_ylabel("nats (corr.)")
-    fig.suptitle("Does the substrate compute? MI/TE per mode (task-driven capture)")
+    fig.suptitle("Does the substrate compute? MI/TE per mode (task-driven capture%s)"
+                 % (tag if not tag else (" [%s]" % tag)))
     fig.tight_layout()
-    fig.savefig(RES / "f2_signal_fig.png", dpi=140)
-    print("saved:", RES / "f2_signal_summary.json", RES / "f2_signal_fig.png")
+    fig.savefig(RES / ("f2_signal%s_fig.png" % pre), dpi=140)
+    print("saved:", RES / ("f2_signal%s.json" % pre),
+          RES / ("f2_signal%s_fig.png" % pre))
     print("== Gate A (aggregate) ==")
     for m in MODES:
         print(f"  {m:<8} mi_cmd_plant={agg[m]['mi_cmd_plant']:.4f} "

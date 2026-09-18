@@ -1,0 +1,160 @@
+{
+  "scenes": {
+    "curb": {
+      "reference": {
+        "n": 6,
+        "survivors": 6,
+        "survival": 1.0,
+        "dist_mean": 6.31,
+        "dist_sd": 0.0,
+        "vx_last_mean": 0.498
+      },
+      "neural": {
+        "n": 6,
+        "survivors": 1,
+        "survival": 0.167,
+        "dist_mean": 5.35,
+        "dist_sd": 0.559,
+        "vx_last_mean": 0.187
+      }
+    },
+    "curb10": {
+      "reference": {
+        "n": 2,
+        "survivors": 0,
+        "survival": 0.0,
+        "dist_mean": 5.16,
+        "dist_sd": 0.0,
+        "vx_last_mean": -0.044
+      },
+      "neural": {
+        "n": 2,
+        "survivors": 0,
+        "survival": 0.0,
+        "dist_mean": 5.71,
+        "dist_sd": 0.137,
+        "vx_last_mean": 0.029
+      },
+      "zero": {
+        "n": 2,
+        "survivors": 0,
+        "survival": 0.0,
+        "dist_mean": 5.13,
+        "dist_sd": 0.0,
+        "vx_last_mean": 0.006
+      },
+      "random": {
+        "n": 2,
+        "survivors": 0,
+        "survival": 0.0,
+        "dist_mean": 5.28,
+        "dist_sd": 1.453,
+        "vx_last_mean": -0.019
+      }
+    },
+    "flat": {
+      "reference": {
+        "n": 2,
+        "survivors": 2,
+        "survival": 1.0,
+        "dist_mean": 6.23,
+        "dist_sd": 0.175,
+        "vx_last_mean": 0.495
+      }
+    },
+    "ramp": {
+      "reference": {
+        "n": 2,
+        "survivors": 2,
+        "survival": 1.0,
+        "dist_mean": 6.23,
+        "dist_sd": 0.175,
+        "vx_last_mean": 0.495
+      },
+      "neural": {
+        "n": 2,
+        "survivors": 2,
+        "survival": 1.0,
+        "dist_mean": 4.88,
+        "dist_sd": 0.092,
+        "vx_last_mean": 0.374
+      },
+      "zero": {
+        "n": 2,
+        "survivors": 2,
+        "survival": 1.0,
+        "dist_mean": 6.48,
+        "dist_sd": 0.175,
+        "vx_last_mean": 0.495
+      },
+      "random": {
+        "n": 2,
+        "survivors": 2,
+        "survival": 1.0,
+        "dist_mean": 4.82,
+        "dist_sd": 0.114,
+        "vx_last_mean": 0.356
+      }
+    },
+    "rough": {
+      "reference": {
+        "n": 6,
+        "survivors": 0,
+        "survival": 0.0,
+        "dist_mean": 3.89,
+        "dist_sd": 0.059,
+        "vx_last_mean": -0.105
+      },
+      "neural": {
+        "n": 6,
+        "survivors": 2,
+        "survival": 0.333,
+        "dist_mean": 5.87,
+        "dist_sd": 0.558,
+        "vx_last_mean": 0.396
+      },
+      "zero": {
+        "n": 2,
+        "survivors": 0,
+        "survival": 0.0,
+        "dist_mean": 3.84,
+        "dist_sd": 0.029,
+        "vx_last_mean": -0.043
+      },
+      "random": {
+        "n": 2,
+        "survivors": 0,
+        "survival": 0.0,
+        "dist_mean": 5.76,
+        "dist_sd": 0.205,
+        "vx_last_mean": 0.421
+      }
+    }
+  },
+  "tests": {
+    "curb": {
+      "neural_survivors": 1,
+      "n_neural": 6,
+      "reference_survivors": 6,
+      "n_reference": 6,
+      "fisher_P(neural_less_eq_ref)": 0.00758,
+      "fisher_P(neural_geeq_ref)": 1.0
+    },
+    "rough": {
+      "neural_survivors": 2,
+      "n_neural": 6,
+      "reference_survivors": 0,
+      "n_reference": 6,
+      "fisher_P(neural_less_eq_ref)": 1.0,
+      "fisher_P(neural_geeq_ref)": 0.22727
+    },
+    "rough_dist_welch": {
+      "t": 8.631,
+      "dof": 5.1,
+      "p_two_sided": 0.00112,
+      "ref_mean": 3.892,
+      "neu_mean": 5.869
+    },
+    "rows_merged": 24
+  }
+}

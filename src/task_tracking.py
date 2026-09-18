@@ -17,6 +17,7 @@ from spike RNG, walker RNG and lesion draw.
 """
 from __future__ import annotations
 
+import argparse
 import json
 import math
 import time
@@ -82,8 +83,8 @@ def distance(ws):
     return d
 
 
-def one_run(mode: str, seed: int, sched: list):
-    r = run_mode(mode, seed=seed, task=sched)
+def one_run(mode: str, seed: int, sched: list, substrate: str = "rate"):
+    r = run_mode(mode, seed=seed, task=sched, substrate=substrate)
     cmd = np.asarray(r["cmd_series"], dtype=float)
     ts = (np.arange(len(cmd)) + 0.5) / TPS
     des = np.asarray([desired(sched, t) for t in ts], dtype=float)
@@ -199,10 +200,11 @@ def paired_stats(neural_runs, ablated_runs):
     }
 
 
-def run_profile(name, sched):
+def run_profile(name, sched, substrate="rate", seeds=None):
     rows, per_seed = {}, []
     for mode in MODES:
-        runs = [one_run(mode, s, sched) for s in SEEDS]
+        runs = [one_run(mode, s, sched, substrate=substrate)
+                for s in (seeds or SEEDS)]
         per_seed.extend(runs)
         rows[mode] = aggregate(runs)
         print("  %-8s rmse=%7.3f±%.3f ci=%s seeds=%s fallen=%s nrmse=%s"
@@ -306,13 +308,29 @@ def multi_figure(profiles_data):
 
 
 def main():
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--substrate", default="rate",
+                        choices=["rate", "izh", "mlp"])
+    parser.add_argument("--seeds", default=None,
+                        help="comma-separated seed list (default: %s)"
+                        % ",".join(map(str, SEEDS)))
+    parser.add_argument("--profiles", default=None,
+                        help="comma-separated profile subset")
+    args = parser.parse_args()
+    if args.seeds:
+        seeds = [int(x) for x in args.seeds.split(",")]
+    else:
+        seeds = SEEDS
+    pro = {k: v for k, v in PROFILES.items()} if args.profiles is None else \
+        {k: PROFILES[k] for k in args.profiles.split(",")}
     RES.mkdir(exist_ok=True)
     profiles_data = {}
     global per_seed_cache
     per_seed_cache = {}
-    for name, sched in PROFILES.items():
+    for name, sched in pro.items():
         print("profile=%s sched=%s" % (name, sched))
-        rows, per_seed, stats = run_profile(name, sched)
+        rows, per_seed, stats = run_profile(name, sched, substrate=args.substrate,
+                                            seeds=seeds)
         profiles_data[name] = {
             "sched": sched,
             "rows": rows,
@@ -326,50 +344,50 @@ def main():
         }
         per_seed_cache[name] = per_seed
 
-    global_rows = {}
-    for name in PROFILES:
-        global_rows[name] = profiles_data[name]["rows"]
-    n_lt_random = sum(1 for n in PROFILES
+    n_lt_random = sum(1 for n in pro
                       if profiles_data[n]["stats"]["neural_vs_random"]["delta_mean"] < 0
                       and profiles_data[n]["stats"]["neural_vs_random"]["p_exact_1s"] <= 0.05)
-    n_lt_zero = sum(1 for n in PROFILES
+    n_lt_zero = sum(1 for n in pro
                     if profiles_data[n]["stats"]["neural_vs_zero"]["delta_mean"] < 0
                     and profiles_data[n]["stats"]["neural_vs_zero"]["p_exact_1s"] <= 0.05)
-    n_lt_mask = sum(1 for n in PROFILES
+    n_lt_mask = sum(1 for n in pro
                     if profiles_data[n]["stats"]["neural_vs_mask0.5"]["delta_mean"] < 0
                     and profiles_data[n]["stats"]["neural_vs_mask0.5"]["p_exact_1s"] <= 0.05)
     out = {
+        "substrate": args.substrate,
         "profile": PROFILES[HEADLINE],
         "headline": HEADLINE,
-        "profiles": PROFILES,
+        "profiles": pro,
         "pass_rmse": PASS_RMSE,
-        "seeds": SEEDS,
+        "seeds": seeds,
         "default_seed": DEFAULT_SEED,
         "duration_sec": DURATION_SEC,
         "profiles_data": profiles_data,
         "global": {
-            "n_profiles": len(PROFILES),
+            "n_profiles": len(pro),
             "n_profiles_neural_lt_random_p005": n_lt_random,
             "n_profiles_neural_lt_zero_p005": n_lt_zero,
             "n_profiles_neural_lt_mask_p005": n_lt_mask,
         },
     }
-    with open(RES / "task_tracking.json", "w") as fp:
+    suffix = "" if args.substrate == "rate" else ("_" + args.substrate)
+    with open(RES / ("task_tracking%s.json" % suffix), "w") as fp:
         json.dump(out, fp, indent=2)
 
     rows = profiles_data[HEADLINE]["rows"]
     per_seed = per_seed_cache[HEADLINE]
     fig = headline_figure([rows[m] for m in MODES],
                           per_seed, PROFILES[HEADLINE])
-    fig.savefig(RES / "task_tracking.png", dpi=140)
+    fig.savefig(RES / ("task_tracking%s.png" % suffix), dpi=140)
     fig2 = multi_figure(profiles_data)
-    fig2.savefig(RES / "task_tracking_multi.png", dpi=140)
-    print("saved:", RES / "task_tracking.json", RES / "task_tracking.png",
-          RES / "task_tracking_multi.png")
-    print("GLOBAL: neural<random p(1s)<=0.05 in %d/%d, "
+    fig2.savefig(RES / ("task_tracking_multi%s.png" % suffix), dpi=140)
+    print("saved:", RES / ("task_tracking%s.json" % suffix),
+          RES / ("task_tracking%s.png" % suffix),
+          RES / ("task_tracking_multi%s.png" % suffix))
+    print("GLOBAL(%s): neural<random p(1s)<=0.05 in %d/%d, "
           "<zero %d/%d, <mask0.5 %d/%d" % (
-              n_lt_random, len(PROFILES), n_lt_zero, len(PROFILES),
-              n_lt_mask, len(PROFILES)))
+              args.substrate, n_lt_random, len(pro), n_lt_zero, len(pro),
+              n_lt_mask, len(pro)))
 
 
 per_seed_cache = {}

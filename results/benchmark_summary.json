@@ -1,0 +1,90 @@
+{
+  "healthy": {
+    "neural_rate": {
+      "rmse_mean": 0.158,
+      "rmse_std": 0.005,
+      "distance_mean": 4.56,
+      "distance_std": 0.11,
+      "survival": 1.0
+    },
+    "neural_izh": {
+      "rmse_mean": 0.183,
+      "rmse_std": 0.005,
+      "distance_mean": 4.13,
+      "distance_std": 0.1,
+      "survival": 1.0
+    },
+    "neural_mlp": {
+      "rmse_mean": 0.23,
+      "rmse_std": 0.01,
+      "distance_mean": 3.5,
+      "distance_std": 0.22,
+      "survival": 1.0
+    },
+    "poisson": {
+      "rmse_mean": 0.181,
+      "rmse_std": 0.005,
+      "distance_mean": 3.78,
+      "distance_std": 0.17,
+      "survival": 1.0
+    },
+    "zero": {
+      "rmse_mean": 0.5,
+      "rmse_std": 0.0,
+      "distance_mean": 5.43,
+      "distance_std": 0.0,
+      "survival": 1.0
+    }
+  },
+  "failure_survival": {
+    "healthy": {
+      "neural_rate": 1.0,
+      "neural_izh": 1.0,
+      "neural_mlp": 1.0,
+      "poisson": 1.0,
+      "zero": 1.0
+    },
+    "freeze_lknee": {
+      "neural_rate": 0.0,
+      "neural_izh": 0.0,
+      "neural_mlp": 0.0,
+      "poisson": 0.0,
+      "zero": 0.0
+    },
+    "freeze_rknee": {
+      "neural_rate": 0.0,
+      "neural_izh": 0.0,
+      "neural_mlp": 0.0,
+      "poisson": 0.0,
+      "zero": 0.0
+    },
+    "freeze_lhip": {
+      "neural_rate": 0.0,
+      "neural_izh": 0.25,
+      "neural_mlp": 0.0,
+      "poisson": 0.0,
+      "zero": 0.0
+    },
+    "degrade_50": {
+      "neural_rate": 0.0,
+      "neural_izh": 0.0,
+      "neural_mlp": 0.0,
+      "poisson": 0.0,
+      "zero": 0.0
+    },
+    "degrade_25": {
+      "neural_rate": 0.0,
+      "neural_izh": 0.0,
+      "neural_mlp": 0.0,
+      "poisson": 0.0,
+      "zero": 0.0
+    },
+    "jitter_leg": {
+      "neural_rate": 1.0,
+      "neural_izh": 1.0,
+      "neural_mlp": 1.0,
+      "poisson": 1.0,
+      "zero": 1.0
+    }
+  }
+}

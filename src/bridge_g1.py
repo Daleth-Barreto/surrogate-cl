@@ -27,6 +27,12 @@ TELEMETRY_PATH = str(Path.home() / "AppData" / "Local" / "Temp" / "opencode"
                      / "bridge_telemetry.json")
 STATE_TSV_PATH = str(Path.home() / "AppData" / "Local" / "Temp" / "opencode"
                      / "bridge_state.tsv")
+_CONF_DIR = Path("C:/Proyectos/papers/surrogate_cl/config")
+SCENE_CONFIGS = {
+    "ramp": _CONF_DIR / "g1_ramp.yaml",
+    "curb": _CONF_DIR / "g1_curb.yaml",
+    "rough": _CONF_DIR / "g1_rough.yaml",
+}
 sys.path.insert(0, str(SNN_SRC))
 
 CH_FSR, CH_ATT = 12, 3
@@ -45,19 +51,35 @@ TAU_GAIN = 40.0        # Nm per decoder unit on torque channels (<12)
 class G1DataSource(SimulatorDataSource):
     def __init__(self, duration_sec: float = 14.0, cmd_vx: float = 0.8,
                  seed: int = 0, perturb: list | None = None,
-                 task: list | None = None, capture_state: bool = False):
+                 task: list | None = None, capture_state: bool = False,
+                 scene: str | None = None, record_path: str | None = None,
+                 substrate: str = "rate", failures: list | None = None):
         self.duration_sec = duration_sec
         self.cmd_vx = float(cmd_vx)
         self.seed = seed
         self.perturbations = perturb or []
         self.task_sched = task or []
         self.capture_state = bool(capture_state)
+        self.scene = scene
+        self.record_path = record_path
+        self.substrate = substrate
+        self.failures = failures or []
+        self._mlp = None
+        self._izh = None
+        if substrate == "izh":
+            from substrate_izh import IzhikevichSubstrate
+            self._izh = IzhikevichSubstrate(seed=seed)
+        elif substrate == "mlp":
+            from substrate_mlp import MLPSubstrate
+            self._mlp = MLPSubstrate(seed=seed)
+        self._rec_t, self._rec_qpos = [], []
         self._state_fp = None
         self._pelvis_id = None
         self._perturbed_steps = 0
         self._rng = np.random.default_rng(seed)
         from deploy12 import Deploy12
-        self.dep = Deploy12()
+        cfg = SCENE_CONFIGS.get(scene)
+        self.dep = Deploy12(config_path=cfg) if cfg else Deploy12()
         self.dep.reset(cmd=[self.cmd_vx, 0.0, 0.0])
         self.dep.cmd_fn = None
         self.dep.obs_noise_std = 0.0
@@ -92,6 +114,7 @@ class G1DataSource(SimulatorDataSource):
         pass
 
     def close(self):
+        self._flush_recording()
         if self._state_fp is not None:
             try:
                 self._state_fp.close()
@@ -99,6 +122,21 @@ class G1DataSource(SimulatorDataSource):
                 pass
         self._save_telemetry()
         self.dep.close()
+
+    def _flush_recording(self):
+        if not self.record_path or not self._rec_t:
+            return
+        try:
+            import os
+            import numpy as _np
+            tmp = self.record_path + ".tmp.npz"
+            _np.savez(tmp,
+                      t=_np.asarray(self._rec_t),
+                      qpos=_np.asarray(self._rec_qpos),
+                      dt=float(self.dep.model.opt.timestep))
+            os.replace(tmp, self.record_path)
+        except Exception:
+            pass
 
     def _channel_base(self, i):
         return 21000 + 900 * (i % 5)
@@ -149,9 +187,29 @@ class G1DataSource(SimulatorDataSource):
             if np.any(f != 0.0):
                 self._perturbed_steps += 1
             self.dep.data.ctrl[:] = self.dep.analog_pd_tau() + self.tau_overlay
+            if self.failures:
+                for fw in self.failures:
+                    if fw.get("t0", 0.0) > t:
+                        continue
+                    idx = fw.get("joints", [])
+                    if not idx:
+                        continue
+                    if fw.get("kind") == "zero":
+                        self.dep.data.ctrl[idx] = 0.0
+                    elif fw.get("kind") == "degrade":
+                        self.dep.data.ctrl[idx] *= float(fw.get("scale", 0.5))
+                    elif fw.get("kind") == "jitter":
+                        amp = float(fw.get("sigma", 0.1))
+                        self.dep.data.ctrl[idx] *= (1.0 + self._rng.normal(
+                            0.0, amp, len(idx)))
             import mujoco
             mujoco.mj_step(self.dep.model, self.dep.data)
             self._physics_steps += 1
+            if self.record_path:
+                self._rec_t.append(float(self.dep.data.time))
+                self._rec_qpos.append(self.dep.data.qpos.copy())
+                if len(self._rec_t) % 25 == 0:
+                    self._flush_recording()
             if self.dep.data.qpos[2] < 0.35:
                 self.fallen = True
                 self.tau_overlay[:] = 0.0
@@ -205,17 +263,12 @@ class G1DataSource(SimulatorDataSource):
         except Exception:
             pass
 
-    def _encode(self, frame_count, first_sample):
-        n = int(frame_count)
-        n_ch = N_CHANNELS
-        frames = np.zeros((n, n_ch), dtype=np.int16)
-        rng = np.random.default_rng(self.seed + (first_sample // SAMPLE_RATE))
-        noise = rng.integers(-60, 60, size=(n, n_ch)).astype(np.int16)
+    def _sensor_values(self):
         s_vals = [float(self.sensors[i]) if i < len(self.sensors) else 0.0
-                  for i in range(n_ch)]
-        if CH_HUB_CTX < n_ch:
+                  for i in range(N_CHANNELS)]
+        if CH_HUB_CTX < N_CHANNELS:
             s_vals[CH_HUB_CTX] = self.hub_ctx
-        if CH_VX_OVERRIDE < n_ch:
+        if CH_VX_OVERRIDE < N_CHANNELS:
             if self.task_sched:
                 s_vals[CH_VX_OVERRIDE] = (self._task_vx(self.dep.data.time)
                                           or 0.0)
@@ -223,6 +276,22 @@ class G1DataSource(SimulatorDataSource):
                 s_vals[CH_VX_OVERRIDE] = (self.cmd_override
                                           if self.cmd_override is not None
                                           else 0.0)
+        return s_vals
+
+    def _encode(self, frame_count, first_sample):
+        n = int(frame_count)
+        n_ch = N_CHANNELS
+        if self._izh is not None:
+            return self._izh.frames(self._sensor_values(), n,
+                                    self.seed + (first_sample // SAMPLE_RATE))
+        if self._mlp is not None:
+            return self._mlp.frames(self._sensor_values(), n,
+                                    self.seed + (first_sample // SAMPLE_RATE),
+                                    first_sample=first_sample)
+        frames = np.zeros((n, n_ch), dtype=np.int16)
+        rng = np.random.default_rng(self.seed + (first_sample // SAMPLE_RATE))
+        noise = rng.integers(-60, 60, size=(n, n_ch)).astype(np.int16)
+        s_vals = self._sensor_values()
         for i in range(n_ch):
             s = s_vals[i]
             if abs(s) < 0.1:
@@ -304,7 +373,11 @@ class G1DataSource(SimulatorDataSource):
 
 def create(duration_sec: float = 14.0, cmd_vx: float = 0.8, seed: int = 0,
            perturb: list | None = None, task: list | None = None,
-           capture_state: bool = False):
+           capture_state: bool = False, scene: str | None = None,
+           record_path: str | None = None, substrate: str = "rate",
+           failures: list | None = None):
     return G1DataSource(duration_sec=duration_sec, cmd_vx=cmd_vx, seed=seed,
                         perturb=perturb, task=task,
-                        capture_state=capture_state)
+                        capture_state=capture_state, scene=scene,
+                        record_path=record_path, substrate=substrate,
+                        failures=failures)
