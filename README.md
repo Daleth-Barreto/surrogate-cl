@@ -292,8 +292,8 @@ If you use AI tools to contribute to this project, please disclose their usage i
 If you use this software in your research, please cite:
 
 ```bibtex
-@software{barreto2026surrogatecl,
-  author       = {Barreto, Daleth},
+@software{hernandez2026surrogatecl,
+  author       = {Hernández Barreto, Alan Daleth},
   title        = {surrogate-cl: Load-bearing substrate validation on the Cortical Labs contract},
   year         = {2026},
   url          = {https://github.com/Daleth-Barreto/surrogate-cl},

@@ -18,7 +18,8 @@ license: MIT
 version: 0.1.0
 date-released: "2026-09-14"
 authors:
-  - family-names: Barreto
-    given-names: Daleth
+  - family-names: Hernández Barreto
+    given-names: Alan Daleth
+    orcid: "0009-0007-7439-1920"
     email: alandaleth.hb@gmail.com
 repository-code: "https://github.com/Daleth-Barreto/surrogate-cl"
